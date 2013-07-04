@@ -14,6 +14,7 @@ package "libffi-dev"
 
 bash "install ruby via rvm" do
   user node[:ruby][:user]
+  cwd  node[:ruby][:home]
   code <<-CODE
     curl -L get.rvm.io | bash -s stable
     source ~/.rvm/scripts/rvm

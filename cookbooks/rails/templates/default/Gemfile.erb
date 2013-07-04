@@ -1,13 +1,20 @@
 source "http://rubygems.org"
 
-gem "rails", "<%= node[:rails][:version] %>"
+gem "rails", "<%= node[:rails][:version]%>"
 gem "haml-rails"
+gem "uglifier"
 gem "jbuilder"
 gem "sass-rails"
 gem "coffee-rails"
+gem "therubyracer"
 
 gem "jquery-rails"
 gem "<%= @db_gem %>"
+
+group :doc do
+  # bundle exec rake doc:rails generates the API under doc/api.
+  gem 'sdoc', require: false
+end
 
 group :development, :test do
   gem 'rspec-rails'

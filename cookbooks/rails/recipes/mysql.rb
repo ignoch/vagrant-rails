@@ -3,15 +3,15 @@ include_recipe 'mysql'
 template "#{node[:rails][:app_root]}/Gemfile" do
   source "Gemfile.erb"
   mode "0666"
-  owner node[:ruby][:user]
-  owner node[:ruby][:group]
-  variables({ :db_gem => "mysql"})
+  owner node[:rails][:user]
+  owner node[:rails][:group]
+  variables({ :db_gem => "mysql2"})
   not_if { `ls #{node[:rails][:app_root]}`.include?("Gemfile") }
 end
 
 bash "bundle install" do
-  user node[:ruby][:user]
-  cwd  node[:rails][:root]
+  user node[:rails][:user]
+  cwd  node[:rails][:app_root]
   code <<-CODE
     source ~/.rvm/scripts/rvm
     bundle install
@@ -30,14 +30,14 @@ end
 template "#{node[:rails][:app_root]}/config/database.yml" do
   source "mysql_database_yml.erb"
   mode 0666
-  owner node[:ruby][:user]
+  owner node[:rails][:user]
   group node[:ruby][:group]
   not_if { `ls #{node[:rails][:app_root]}/config`.include?("database.yml") }
 end
 
 bash "db bootstrap" do
-  user node[:ruby][:user]
-  cwd node[:rails][:root]
+  user node[:rails][:user]
+  cwd  node[:rails][:app_root]
   environment(node[:rails][:bash_env])
   code <<-CODE
 source ~/.rvm/scripts/rvm

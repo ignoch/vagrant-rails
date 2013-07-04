@@ -1,8 +1,9 @@
 package "libxml2-dev"
 package "libxslt1-dev"
+package "libv8-dev"
 
 bash "install rails" do
-  user node[:ruby][:user]
+  user node[:rails][:user]
   code <<-CODE
     source ~/.rvm/scripts/rvm
     gem install rails -v #{node[:rails][:version]}
@@ -13,7 +14,7 @@ end
 rails_new_command = "rails new #{node[:rails][:app_name]} -T"
 
 bash "create new rails project" do
-  user node[:ruby][:user]
+  user node[:rails][:user]
   cwd  node[:rails][:root]
   code <<-CODE
     source ~/.rvm/scripts/rvm
