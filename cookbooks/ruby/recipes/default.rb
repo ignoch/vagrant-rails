@@ -1,26 +1,11 @@
-package "curl"
-package "libyaml-dev"
+%W(curl gawk libyaml-dev libsqlite3-dev sqlite3 libgdbm-dev libncurses5-dev libtool pkg-config libffi-dev).each do |pkg|
+  package "#{pkg}"
+end
 
-# rvm requirements
-package "pkg-config"
-package "gawk"
-package "libsqlite3-dev"
-package "sqlite"
-package "libgdbm-dev"
-package "libncurses5-dev"
-package "libtool"
-package "libffi-dev"
-
-
-bash "install ruby via rvm" do
-  user node[:ruby][:user]
-  cwd  node[:ruby][:home]
-  code <<-CODE
-    curl -L get.rvm.io | bash -s stable
-    source ~/.rvm/scripts/rvm
-    rvm install #{node[:ruby][:version]}
-    rvm use #{node[:ruby][:version]} --default
-  CODE
+execute "install RVM" do
+  user "#{node[:ruby][:user]}"
+  cwd  "#{node[:ruby][:home]}"
+  command "curl -L https://get.rvm.io | bash -s stable --ruby"
   environment({ 'HOME' => node[:ruby][:home], 'USER' => node[:ruby][:user] })
   not_if do
     `ls #{node[:ruby][:home]}`.include?("rvm") &&
