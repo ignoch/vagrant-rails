@@ -5,7 +5,7 @@ end
 execute "install RVM" do
   user "#{node[:ruby][:user]}"
   cwd  "#{node[:ruby][:home]}"
-  command "curl -L https://get.rvm.io | bash -s stable --ruby"
+  command "curl -L https://get.rvm.io | bash -s stable --ruby=#{node[:ruby][:version]}"
   environment({ 'HOME' => node[:ruby][:home], 'USER' => node[:ruby][:user] })
   not_if do
     `ls #{node[:ruby][:home]}`.include?("rvm") &&
